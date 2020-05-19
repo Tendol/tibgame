@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import PropTypes from "prop-types";
+import EndScore from "./EndScore";
 import "./Board.css"
 
 
@@ -9,6 +10,8 @@ const Board = ({words})=>  {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [inputValue, setInputValue] = useState('')
   const [matched, setMatched] = useState(false);
+  const [error, setError] = useState(0);
+  const [finished, setFinished] = useState(false);
 
   const handleChange = (e) => {
     const input = e.target.value;
@@ -24,11 +27,13 @@ const Board = ({words})=>  {
 
         // check if current word is last of words
         if (currentWordIndex === words.length - 1) {
+          setFinished(true)
           setCurrentWordIndex(0);
         };
       };
     }
     else{
+      setError(error + 1)
       setMatched(false)
     }
   };
@@ -38,16 +43,23 @@ const Board = ({words})=>  {
 
   const typedWord = letters.map((letter, index) => {
     return letter === inputValue[index] ? (
-      <span className="highlighted">{letter}</span>
+      <span key={index} className="highlighted">{letter}</span>
     ) : (
       letter
     );
   });
 
+  const restart = () =>{
+    setFinished(false)
+    setError(0)
+  }
+
+  console.log("error: ", error);
+  console.log("finished: ", finished);
   return (
     <div className="wrapper">
       <h1>Tibetan Typing</h1>
-      <div className="wrapper-input">
+      {!finished && <div className="wrapper-input">
       <h2 className="current-word">{typedWord}</h2>
       <input
         type="text"
@@ -56,7 +68,9 @@ const Board = ({words})=>  {
         onChange={handleChange}
         className={`${!matched ? "trigger" : ""}`}
       />
-      </div>
+      </div>}
+
+      {finished && <EndScore error={error} restart={restart}/>}
     </div>
   );
 };
