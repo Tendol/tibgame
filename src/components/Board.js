@@ -41,7 +41,7 @@ const Board = ({words})=>  {
 
   const letters = [...words[currentWordIndex]];
 
-  const typedWord = letters.map((letter, index) => {
+  const wordsToType = letters.map((letter, index) => {
     return letter === inputValue[index] ? (
       <span key={index} className="highlighted">{letter}</span>
     ) : (
@@ -54,13 +54,11 @@ const Board = ({words})=>  {
     setError(0)
   }
 
-  console.log("error: ", error);
-  console.log("finished: ", finished);
   return (
     <div className="wrapper">
       <h1>Tibetan Typing</h1>
       {!finished && <div className="wrapper-input">
-      <h2 className="current-word">{typedWord}</h2>
+      <h2 className="current-word">{wordsToType}</h2>
       <input
         type="text"
         placeholder="type here"
@@ -72,12 +70,11 @@ const Board = ({words})=>  {
 
       {finished && <EndScore error={error} restart={restart}/>}
     </div>
-  );
+  ); 
 };
 
 Board.propTypes = {
   words: PropTypes.array.isRequired
 };
-
 
 export default Board;
