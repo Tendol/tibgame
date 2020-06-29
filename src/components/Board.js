@@ -5,7 +5,7 @@ import "./Board.css"
 
 
 
-const Board = ({words})=>  {
+const Board = ({text})=>  {
 
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [inputValue, setInputValue] = useState('')
@@ -13,18 +13,21 @@ const Board = ({words})=>  {
   const [error, setError] = useState(0);
   const [finished, setFinished] = useState(false);
 
+  const wordsArray = text.split('་');
+  const words = wordsArray.map(word => {return word+"་"})
   const handleChange = (e) => {
     const input = e.target.value;
+    console.log("handle change input: ", input)
     const currentWord = words[currentWordIndex];
+    console.log("current Word: ", currentWord)
     // match last letter from current work and input work
     if (currentWord[input.length - 1] === input[input.length - 1]) {
+      console.log("entered")
       setInputValue(e.target.value)
       setMatched(true)
-
       if (currentWord === input){
         setCurrentWordIndex(currentWordIndex + 1);
         setInputValue("");
-
         // check if current word is last of words
         if (currentWordIndex === words.length - 1) {
           setFinished(true)
@@ -38,11 +41,15 @@ const Board = ({words})=>  {
     }
   };
 
-
-  const letters = [...words[currentWordIndex]];
+  // console.log("inputValue: ", inputValue)
+  const letters = [...text];
+  // console.log("letters: ", letters)
 
   const wordsToType = letters.map((letter, index) => {
-    return letter === inputValue[index] ? (
+    // console.log("input Value: ", inputValue)
+    // console.log("input: ", inputValue[index])
+    // console.log("index: ", index)
+    return letter == inputValue ? (
       <span key={index} className="highlighted">{letter}</span>
     ) : (
       letter
@@ -60,6 +67,7 @@ const Board = ({words})=>  {
       {!finished && <div className="wrapper-input">
       <h2 className="current-word">{wordsToType}</h2>
       <input
+        name="inputValue"
         type="text"
         placeholder="type here"
         value={inputValue}
@@ -74,7 +82,7 @@ const Board = ({words})=>  {
 };
 
 Board.propTypes = {
-  words: PropTypes.array.isRequired
+  text: PropTypes.string.isRequired
 };
 
 export default Board;

@@ -27,7 +27,9 @@ body {
 .highlighted{
   color: #9e871ffb;
 }
-
+.error{
+  color:red
+}
 .current-word {
   margin: 0 0 30px 0;
   font-size: 5rem;
