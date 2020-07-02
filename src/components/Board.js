@@ -1,88 +1,104 @@
-import React, {useState} from "react";
-import PropTypes from "prop-types";
-import EndScore from "./EndScore";
+import React, { useState } from 'react';
+
+import useKeyPress from './useKeyPress';
+import { currentTime } from './Time';
 import "./Board.css"
 
 
 
-const Board = ({text})=>  {
 
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [inputValue, setInputValue] = useState('')
-  const [matched, setMatched] = useState(false);
-  const [error, setError] = useState(0);
-  const [finished, setFinished] = useState(false);
+const Board = ({initialWords, matched, accuracy, finished, wpm}) => {
 
-  const wordsArray = text.split('་');
-  const words = wordsArray.map(word => {return word+"་"})
-  const handleChange = (e) => {
-    const input = e.target.value;
-    console.log("handle change input: ", input)
-    const currentWord = words[currentWordIndex];
-    console.log("current Word: ", currentWord)
-    // match last letter from current work and input work
-    if (currentWord[input.length - 1] === input[input.length - 1]) {
-      console.log("entered")
-      setInputValue(e.target.value)
-      setMatched(true)
-      if (currentWord === input){
-        setCurrentWordIndex(currentWordIndex + 1);
-        setInputValue("");
-        // check if current word is last of words
-        if (currentWordIndex === words.length - 1) {
-          setFinished(true)
-          setCurrentWordIndex(0);
-        };
-      };
-    }
-    else{
-      setError(error + 1)
-      setMatched(false)
-    }
-  };
+  const [leftPadding, setLeftPadding] = useState(
+    new Array(20).fill(' ').join(''),
+  );
+  const [outgoingChars, setOutgoingChars] = useState('');
+  const [currentChar, setCurrentChar] = useState(initialWords.charAt(0));
+  const [incomingChars, setIncomingChars] = useState(initialWords.substr(1));
+  const [storeChars, setStoreChars] = useState('')
+  const [error, setError] = useState(false)
+  const [startTime, setStartTime] = useState();
+  const [wordCount, setWordCount] = useState(0);
+  const [typedChars, setTypedChars] = useState('');
 
-  // console.log("inputValue: ", inputValue)
-  const letters = [...text];
-  // console.log("letters: ", letters)
+  let mounted = true
+  
+    useKeyPress(key => {
+      if (!startTime) {
+        setStartTime(currentTime())
+      }
+    
+      let updatedOutgoingChars = outgoingChars;
+      let updatedIncomingChars = incomingChars;
+      let updatedStoreChars = storeChars;
+      if(mounted){
+        if (key === currentChar) {
+          setError(false)
+          matched(false)
+          if (leftPadding.length > 0) {
+            setLeftPadding(leftPadding.substring(1));
+          }
+      
+          // when the characters have vowel, or rang-go lang-go 
+          if(incomingChars.charCodeAt(0) >= 3953 & incomingChars.charCodeAt(0) < 4028) {
+            updatedStoreChars += currentChar
+            setStoreChars(updatedStoreChars)
+          }
+          
+          // when it is a new alphabet 
+          if(incomingChars.charCodeAt(0) < 3953) {
+            setStoreChars("")
+          }
+          
+          updatedOutgoingChars += currentChar;
+          setOutgoingChars(updatedOutgoingChars);
+      
+          setCurrentChar(incomingChars.charAt(0));
+      
+          updatedIncomingChars = incomingChars.substring(1);
+          // if (updatedIncomingChars.split('་').length < 10) {
+          //   updatedIncomingChars += ' ' + generate();
+          // }
+          setIncomingChars(updatedIncomingChars);
+      
+          if (incomingChars.charAt(0) === '་' || incomingChars.charAt(0) === '།') {
+            setWordCount(wordCount + 1);
+            // const durationInMinutes = (currentTime() - startTime) / 60000.0;
+            // setWpm(((wordCount + 1) / durationInMinutes).toFixed(2));
+          }
+        }
+        else{
+          setError(true)
+          matched(true)
+        }
+      }
 
-  const wordsToType = letters.map((letter, index) => {
-    // console.log("input Value: ", inputValue)
-    // console.log("input: ", inputValue[index])
-    // console.log("index: ", index)
-    return letter == inputValue ? (
-      <span key={index} className="highlighted">{letter}</span>
-    ) : (
-      letter
-    );
-  });
+      const updatedTypedChars = typedChars + key;
+      setTypedChars(updatedTypedChars);
 
-  const restart = () =>{
-    setFinished(false)
-    setError(0)
-  }
 
+      if(currentTime() - startTime > 1000){
+        const acc = ((updatedOutgoingChars.length * 100) / updatedTypedChars.length).toFixed(
+              2,
+            )
+        accuracy(acc)
+        wpm(wordCount)
+        finished(true)
+        return() => mounted = false
+      }
+    });
+
+
+ 
   return (
-    <div className="wrapper">
-      <h1>Tibetan Typing</h1>
-      {!finished && <div className="wrapper-input">
-      <h2 className="current-word">{wordsToType}</h2>
-      <input
-        name="inputValue"
-        type="text"
-        placeholder="type here"
-        value={inputValue}
-        onChange={handleChange}
-        className={`${!matched ? "trigger" : ""}`}
-      />
-      </div>}
-
-      {finished && <EndScore error={error} restart={restart}/>}
+    <div className="Character">
+      <span className="Character-out">
+        {(leftPadding + outgoingChars).slice(-22)}
+      </span>
+      <span className={`${!error ? "Character-current" : "Character-error"}`}>{storeChars + currentChar}</span>
+      <span>{incomingChars.substr(0, 22)}</span>
     </div>
-  ); 
-};
-
-Board.propTypes = {
-  text: PropTypes.string.isRequired
-};
+  )
+}
 
 export default Board;

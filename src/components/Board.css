@@ -1,72 +1,20 @@
 
-h1 {
-  margin-top: 20px;
-  text-align: center;
-  font-size: 42px;
-  color: #000000;
+.Character {
+  white-space: pre;
 }
 
-body {
-  margin: 0;
-  text-align: center;
-  background: #0795d6fb;
-  color: #ffffff;
-  letter-spacing: 2.7px;
-  font-size: 18px;
+.Character-current {
+  background-color: #09d3ac ;
 }
 
-.wrapper {
-  position: relative;
+.Character-out {
+  color: yellow;
+}
+.Character-error {
+  background-color: red;
 }
 
-.wrapper-input {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.highlighted{
-  color: #9e871ffb;
-}
-.error{
-  color:red
-}
-.current-word {
-  margin: 0 0 30px 0;
-  font-size: 5rem;
-  text-shadow: 2px 2px 10px rgb(30, 113, 152);
-  letter-spacing: 10px;
-  font-size: 5rem;
-}
-
-input {
-  width: 330px;
-  padding: 10px;
-  font-size: 4rem;
-  display: inline-block;
-  margin: 0 auto;
-  letter-spacing: 0.27rem;
-  border: 2px dashed #272727;
-  outline: 0;
-}
-
-.trigger {
-  animation: shake 0.82s;
-}
-
-@keyframes shake {
-  10%, 100% {
-    transform: translate3d(-1px, 0, 0);
-  }
-  
-  20%, 80% {
-    transform: translate3d(2px, 0, 0);
-  }
-
-  30%, 50%, 70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-
-  40%, 60% {
-    transform: translate3d(4px, 0, 0);
-  }
+.InputBox {
+  height: 30px;
+  font-size: 25px;
 }

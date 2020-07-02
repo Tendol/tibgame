@@ -1,5 +1,13 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+### Resources used: 
+
+Using window.addEventListener with react hooks 
+https://atomizedobjects.com/blog/react/add-event-listener-react-hooks/ 
+
+Tutorial - Create a Typing Game with React Hooks, UseKeyPress, and Faker 
+https://medium.com/better-programming/create-a-typing-game-with-react-hooks-usekeypress-and-faker-28bbc7919820
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -66,3 +74,4 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+

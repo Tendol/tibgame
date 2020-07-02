@@ -1,34 +1,36 @@
 import { useState, useEffect } from 'react';
 
-//1
 const useKeyPress = callback => {
-  //2
   const [keyPressed, setKeyPressed] = useState();
-  //3
+
   useEffect(() => {
-    //4
+    
     const downHandler = ({ key }) => {
+      // check if the same key is pressed for too long 
+      // this is done by keeping track of the keyPressed 
       if (keyPressed !== key && key.length === 1) {
         setKeyPressed(key);
         callback && callback(key);
       }
     };
-    //5
+    // When key is released 
     const upHandler = () => {
       setKeyPressed(null);
     };
 
-    //6
+    // initiate the event handlers
     window.addEventListener('keydown', downHandler);
     window.addEventListener('keyup', upHandler);
-
-    return () => {
-      //7
+  
+    // the clean up function ensures that there will only 
+    // ever be one instance of the event listener
+    // and will be removed when unmounted 
+    return function cleanup() {
       window.removeEventListener('keydown', downHandler);
       window.removeEventListener('keyup', upHandler);
     };
   });
-  //8
+  
   return keyPressed;
 };
 
