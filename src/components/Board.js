@@ -77,7 +77,7 @@ const Board = ({initialWords, matched, accuracy, finished, wpm}) => {
       setTypedChars(updatedTypedChars);
 
 
-      if(currentTime() - startTime > 6000){
+      if(currentTime() - startTime > 60000){
         const acc = ((updatedOutgoingChars.length * 100) / updatedTypedChars.length).toFixed(
               2,
             )
