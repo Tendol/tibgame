@@ -22,7 +22,7 @@ const Board = ({initialWords, matched, accuracy, finished, wpm}) => {
   const [typedChars, setTypedChars] = useState('');
 
   let mounted = true
-  
+
     useKeyPress(key => {
       if (!startTime) {
         setStartTime(currentTime())
@@ -77,7 +77,7 @@ const Board = ({initialWords, matched, accuracy, finished, wpm}) => {
       setTypedChars(updatedTypedChars);
 
 
-      if(currentTime() - startTime > 1000){
+      if(currentTime() - startTime > 6000){
         const acc = ((updatedOutgoingChars.length * 100) / updatedTypedChars.length).toFixed(
               2,
             )
