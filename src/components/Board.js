@@ -5,7 +5,7 @@ import { currentTime } from './Time';
 
 import "./Board.css"
 
-const time = 2000
+const time = 60000
 const Board = ({initialWords, matched, accuracy, finished, wpm}) => {
 
   const [leftPadding, setLeftPadding] = useState(
