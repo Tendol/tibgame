@@ -1,6 +1,8 @@
 
 .Character {
+  font-size: calc(30px + 4vmin);
   white-space: pre;
+  margin-bottom: 20%;;
 }
 
 .Character-current {
@@ -14,7 +16,3 @@
   background-color: red;
 }
 
-.InputBox {
-  height: 30px;
-  font-size: 25px;
-}
